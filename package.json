@@ -1,0 +1,14 @@
+{
+  "name": "wheatley",
+  "version": "0.0.0",
+  "author": "Antistatique",
+  "description": "Antistatique bot",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@slack/interactive-messages": "^1.6.0",
+    "phelia": "^0.1.4",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  }
+}
