@@ -37,7 +37,7 @@ app.post("/meeting", (req, res) => {
 // });
 
 // Send message to Yann G.
-client.postMessage(MeetingSurvey, "U075T9LPP");
+// client.postMessage(MeetingSurvey, "U075T9LPP");
 
 app.listen(port, () =>
   console.log(`Example app listening at http://localhost:${port}`)

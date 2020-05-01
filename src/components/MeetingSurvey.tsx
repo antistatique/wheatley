@@ -1,5 +1,5 @@
 import React from 'react';
-import { Message, Modal, Confirm, Button, Actions, Text, Section } from 'phelia';
+import { Message, Button, Actions, Text, Section } from 'phelia';
 
 import MeetingSurveyModal from './MeetingSurveyModal';
 
@@ -14,10 +14,7 @@ const MeetingSurvey = ({ useModal }: any) => {
     <Message>
       <Section>
         <Text emoji>
-          {[
-            'Salutation humains ! Je vous prierai de bien vouloir noter ce meeting',
-            'Jacque à dit: “évaluer le meeting”',
-          ][Math.floor(Math.random() * (2 - 0)) + 0]}
+          Salutation humains ! Je vous prierai de bien vouloir noter ce meeting
         </Text>
       </Section>
       <Actions>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, RadioButtons, Option, Input, TextField } from 'phelia';
+import { Modal, RadioButtons, Option, Input, TextField, Text } from 'phelia';
 
 const MeetingSurveyModal = ({ useState }: any) => {
   const [form, setForm] = useState('form', {});
@@ -11,13 +11,17 @@ const MeetingSurveyModal = ({ useState }: any) => {
           action="efficient"
           onSelect={event => setForm({ ...form, efficient: event.selected })}
         >
-          <Option value="yes">Oui</Option>
-          <Option value="no">Non</Option>
+          <Option value="yes"><Text emoji>Oui :thumbsup:</Text></Option>
+          <Option value="no"><Text emoji>Non :thumbsdown:</Text></Option>
         </RadioButtons>
       </Input>
 
       <Input label="Super : Que pouvons-nous apprendre ?">
-        <TextField action="comment" placeholder="type something here" multiline />
+        <TextField
+          action="comment"
+          placeholder="Un petit commentaire serait bienvenu"
+          multiline
+        />
       </Input>
     </Modal>
   );
