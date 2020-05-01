@@ -8,8 +8,7 @@
     "build": "tsc",
     "dev": "tsc -w",
     "serve": "nodemon dist/server.js",
-    "start": "yarn build && node dist/server.js",
-    "postinstall": "yarn build"
+    "start": "yarn build && node dist/server.js"
   },
   "dependencies": {
     "@slack/events-api": "^2.3.2",
