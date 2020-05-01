@@ -8,12 +8,14 @@
     "build": "tsc",
     "dev": "tsc -w",
     "serve": "nodemon dist/server.js",
-    "start": "yarn build && node dist/server.js"
+    "start": "yarn build && node dist/server.js",
+    "postinstall": "yarn build"
   },
   "dependencies": {
     "@slack/events-api": "^2.3.2",
     "@slack/interactive-messages": "^1.6.0",
     "@slack/web-api": "^5.8.1",
+    "@types/airtable": "^0.5.7",
     "airtable": "^0.8.1",
     "body-parser": "^1.19.0",
     "dotenv": "^8.2.0",

@@ -8,7 +8,7 @@ import MeetingSurvey from './components/MeetingSurvey';
 
 dotenv.config();
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 // const slackEvents = createEventAdapter(process.env.SLACK_SIGNING_SECRET, {
 //  includeBody: true,
 // })
