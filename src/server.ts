@@ -27,10 +27,14 @@ app.post(
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
 
-const setMeetingSurvey = (channel: string) => client.postMessage(MeetingSurvey, channel);
-app.post("/meeting", (req, res) => {
+const setMeetingSurvey = (channel: string, props: any) => client.postMessage(
+  MeetingSurvey,
+  channel,
+  props
+);
+app.post("/meeting", (req, res) => {  
   res.json();
-  setMeetingSurvey(req.body.channel_id);
+  setMeetingSurvey(req.body.channel_id, req.body);
 });
 // slackEvents.on('app_mention', async (event) => {
 //   client.postMessage(MeetingSurvey, event.channel);
