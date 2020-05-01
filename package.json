@@ -3,12 +3,24 @@
   "version": "0.0.0",
   "author": "Antistatique",
   "description": "Antistatique bot",
-  "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc -w",
+    "serve": "nodemon dist/server.js",
+    "start": "yarn build && node dist/server.js"
+  },
   "dependencies": {
     "@slack/interactive-messages": "^1.6.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
     "phelia": "^0.1.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.3",
+    "tslint": "^6.1.2",
+    "typescript": "^3.8.3"
   }
 }
