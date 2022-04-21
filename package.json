@@ -1,0 +1,21 @@
+{
+  "name": "wheatley",
+  "version": "2.0.0",
+  "description": "Your friendly Antistatique assistant",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "repository": "git@github.com:antistatique/wheatley.git",
+  "author": "Antistatique <hello@antistatique.net>",
+  "license": "MIT",
+  "dependencies": {
+    "@slack/bolt": "^3.11.0",
+    "axios": "^0.26.1",
+    "cheerio": "^1.0.0-rc.10",
+    "dotenv": "^16.0.0",
+    "firebase": "^9.6.11",
+    "nanoid": "^3.3.3",
+    "nodemon": "^2.0.15"
+  }
+}
