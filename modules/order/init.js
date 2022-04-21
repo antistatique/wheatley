@@ -26,13 +26,13 @@ module.exports = async ({ ack, payload, context, client }) => {
       text: 'Récupération du menu en cours'
     });
 
-    await sources[source].populateMenu();
+    if (source !== 'unknown') await sources[source].populateMenu();
 
     await client.chat.update({
       token: context.botToken,
       channel,
       ts,
-      blocks: [sources[source].ctaSection(id, source)],
+      blocks: [...sources[source].ctaSection(id, source)],
       text: 'Passe ta commande'
     });
 

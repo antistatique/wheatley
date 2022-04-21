@@ -9,7 +9,7 @@ module.exports = async ({ id, client, token, title, price, updatedDoc }) => {
       channel,
       ts,
       blocks: [
-        sources[source].ctaSection(id, source),
+        ...sources[source].ctaSection(id, source),
         {
           type: 'header',
           text: {

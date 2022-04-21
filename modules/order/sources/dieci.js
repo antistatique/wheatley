@@ -6,25 +6,39 @@ const { doc, setDoc } = require('firebase/firestore');
 const { db } = require('../../../services/firebase');
 
 module.exports = {
-  ctaSection: (id, source) => ({
-    type: 'section',
-    text: {
-      type: 'mrkdwn',
-      text: ':pizza: Envie d\'une pizza moins bonne que chez Mami ?\nPour commander :point_right: https://webshop.dieci.ch/c/1/pizza'
+  ctaSection: (id, source) => [
+    {
+      type: 'divider'
     },
-    accessory: {
-      type: 'button',
+    {
+      type: 'header',
       text: {
         type: 'plain_text',
-        text: 'Passe ta commande !'
+        text: 'Dieci Lausanne Ouest',
+        emoji: true
+      }
+    },
+    {
+      type: 'section',
+      text: {
+        type: 'mrkdwn',
+        text: ':pizza: Envie d\'une pizza *moins bonne que chez Mami* #traitor ?\n:point_right: Pour <https://webshop.dieci.ch/c/1/pizza|finaliser la commande>'
       },
-      action_id: 'open_order_modal',
-      value: JSON.stringify({
-        id,
-        source
-      })
+      accessory: {
+        type: 'button',
+        text: {
+          type: 'plain_text',
+          text: 'Passe ta commande !'
+        },
+        style: 'primary',
+        action_id: 'open_order_modal',
+        value: JSON.stringify({
+          id,
+          source
+        })
+      }
     }
-  }),
+  ],
 
   populateMenu: async () => {
     // @TODO make it work

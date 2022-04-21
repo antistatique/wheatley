@@ -29,7 +29,7 @@ module.exports = async ({ ack, body, client }) => {
                 type: 'section',
                 text: {
                   type: 'mrkdwn',
-                  text: `*${title}*\n${price}`
+                  text: `\n \n \n*${title}*\n${price}`
                 },
                 accessory: {
                   type: 'image',
@@ -43,9 +43,10 @@ module.exports = async ({ ack, body, client }) => {
                   type: 'button',
                   text: {
                     type: 'plain_text',
-                    text: 'Commander :all-the-things:',
+                    text: 'Ajouter',
                     emoji: true
                   },
+                  style: 'primary',
                   value: JSON.stringify({
                     id,
                     title,
