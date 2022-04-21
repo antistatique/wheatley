@@ -8,9 +8,6 @@ const { db } = require('../../../services/firebase');
 module.exports = {
   ctaSection: (id, source) => [
     {
-      type: 'divider'
-    },
-    {
       type: 'header',
       text: {
         type: 'plain_text',

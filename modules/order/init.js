@@ -13,6 +13,24 @@ module.exports = async ({ ack, payload, context, client }) => {
   if (!Object.keys(sources).includes(source)) source = 'unknown';
 
   try {
+    await client.chat.postMessage({
+      token: context.botToken,
+      channel: payload.channel_id,
+      blocks: [
+        {
+          type: 'divider'
+        },
+        {
+          type: "section",
+          text: {
+            type: "mrkdwn",
+            text: `:credit_card: @${payload.user_name} a démaré une nouvelle commande !`
+          }
+        }
+      ],
+      text: 'Nouvelle commande'
+    });
+
     const { channel, ts } = await client.chat.postMessage({
       token: context.botToken,
       channel: payload.channel_id,
