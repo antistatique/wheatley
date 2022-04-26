@@ -49,7 +49,6 @@ module.exports = async ({ id, client, token, title, price, updatedDoc }) => {
                   name,
                   key,
                   id,
-                  price,
                 }),
                 action_id: 'pay_order'
               }

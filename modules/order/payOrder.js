@@ -6,7 +6,7 @@ const updateMessage = require('./updateMessage');
 module.exports = async ({ ack, body, context, client }) => {
   await ack();
 
-  const { name, id, price, key: title } = JSON.parse(body.actions[0].value);
+  const { name, id, key: title } = JSON.parse(body.actions[0].value);
   const docRef = doc(db, 'orders', id);
   const docSnap = await getDoc(docRef);
 
@@ -23,7 +23,7 @@ module.exports = async ({ ack, body, context, client }) => {
       order: {
         ...order,
         [title]: {
-          price,
+          ...order[title],
           people: {
             ...order[title]?.people,
             [name]: !order[title]?.people?.[name]
@@ -38,7 +38,7 @@ module.exports = async ({ ack, body, context, client }) => {
       id,
       client,
       title,
-      price,
+      price: order[title]?.price,
       token: context.botToken,
       updatedDoc
     });
