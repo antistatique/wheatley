@@ -38,21 +38,13 @@ module.exports = {
   ],
 
   populateMenu: async () => {
-    const { data: html } = await axios('https://www.mamipizza.ch/shop');
-    const $ = cheerio.load(html);
+    const { data } = await axios('https://api.wixrestaurants.com/v2/organizations/5468348042963155/menu?locationId=e4b191c7-3247-4883-b49d-8f1a6221fb76');
 
-    const menu = [];
-
-    $('[data-hook="product-list-grid-item"]').each(function() {
-      const title = $(this).find('h3').text();
-      const price = $(this).find('[data-hook="product-item-price-to-pay"]').text();
-      const image = $(this).find('[data-hook="product-item-images"]').attr('style').replace('background-image:url(', '').replace(');background-size:contain', '').replace('w_100,h_100', 'w_300,h_300');
-
-      // Pas fou
-      if (!title.toLowerCase().includes('salade')) {
-        menu.push({ title, price, image });
-      }
-    });
+    const menu = data?.items?.filter(i => i.price > 1300)?.map(i => ({
+      title: i.title?.fr_CH,
+      price: i.price / 100,
+      image: i.media?.logo,
+    }));
 
     if (menu.length > 0) {
       try {
