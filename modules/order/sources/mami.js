@@ -42,8 +42,8 @@ module.exports = {
 
     const menu = data?.items?.filter(i => i.price > 1300)?.map(i => ({
       title: i.title?.fr_CH,
-      price: i.price / 100,
-      image: i.media?.logo,
+      price: `CHF ${i.price / 100}.00`,
+      image: i.media?.logo ?? 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/325/pizza_1f355.png',
     }));
 
     if (menu.length > 0) {
