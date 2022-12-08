@@ -1,0 +1,1 @@
+- App manifest → https://app.slack.com/app-settings/T04D665PJ/A012FHCU6MV/app-manifest

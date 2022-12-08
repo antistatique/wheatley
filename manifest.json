@@ -1,0 +1,51 @@
+{
+  "display_information": {
+    "name": "Wheatley",
+    "description": "Your friendly Antistatique assistant",
+    "background_color": "#12192a"
+  },
+  "features": {
+    "bot_user": {
+      "display_name": "wheatley",
+      "always_online": true
+    },
+    "slash_commands": [
+      {
+        "command": "/order",
+        "url": "https://4jl3u8-3000.preview.csb.app/slack/events",
+        "description": "par exemple “/order mami”",
+        "usage_hint": "Commande de nourriture",
+        "should_escape": false
+      }
+    ]
+  },
+  "oauth_config": {
+    "scopes": {
+      "bot": [
+        "chat:write",
+        "channels:join",
+        "chat:write.public",
+        "commands",
+        "incoming-webhook",
+        "users:read",
+        "app_mentions:read"
+      ]
+    }
+  },
+  "settings": {
+    "event_subscriptions": {
+      "request_url": "https://4jl3u8-3000.preview.csb.app/slack/events",
+      "bot_events": [
+        "app_mention"
+      ]
+    },
+    "interactivity": {
+      "is_enabled": true,
+      "request_url": "https://4jl3u8-3000.preview.csb.app/slack/events",
+      "message_menu_options_url": "https://4jl3u8-3000.preview.csb.app/slack/events"
+    },
+    "org_deploy_enabled": false,
+    "socket_mode_enabled": false,
+    "token_rotation_enabled": false
+  }
+}
