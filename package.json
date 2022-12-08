@@ -4,7 +4,8 @@
   "description": "Your friendly Antistatique assistant",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app.js"
+    "dev": "nodemon app.js",
+    "start": "node app.js"
   },
   "repository": "git@github.com:antistatique/wheatley.git",
   "author": "Antistatique <hello@antistatique.net>",
