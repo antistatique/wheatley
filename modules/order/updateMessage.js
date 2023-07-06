@@ -14,7 +14,7 @@ module.exports = async ({ id, client, token, title, price, updatedDoc }) => {
           type: 'header',
           text: {
             type: 'plain_text',
-            text: 'La commande',
+            text: `La commande : ${Object.keys(order).reduce((acc, val) => acc + Object.keys(order[val].people).length, 0)} pizz'`,
             emoji: true
           }
         },
@@ -24,11 +24,15 @@ module.exports = async ({ id, client, token, title, price, updatedDoc }) => {
         ...Object.keys(order).sort().reduce((acc, key) => [
           ...acc,
           {
-            type: 'section',
+            type: 'header',
             text: {
-              type: 'mrkdwn',
-              text: `*[${Object.keys(order[key].people).length}] ${key}*`
+              type: 'plain_text',
+              text: `[${Object.keys(order[key].people).length}] ${key}`,
+              emoji: true
             }
+          },
+          {
+            type: 'divider'
           },
           ...Object.keys(order[key].people).reduce((peopleAcc, name) => [
             ...peopleAcc,
@@ -38,25 +42,44 @@ module.exports = async ({ id, client, token, title, price, updatedDoc }) => {
                 type: 'mrkdwn',
                 text: `${order[key].people[name] ? ':white_check_mark:' : ':arrows_counterclockwise:'} @${name} - ${order[key].price}`
               },
-              accessory: {
-                type: 'button',
-                text: {
-                  type: 'plain_text',
-                  text: order[key].people[name] ? "À payer" : "C'est payé !",
-                  emoji: true
+            },
+            {
+              "type": "actions",
+              "elements": [
+                {
+                  type: 'button',
+                  text: {
+                    type: 'plain_text',
+                    text: order[key].people[name] ? "À payer" : "C'est payé !",
+                    emoji: true
+                  },
+                  value: JSON.stringify({
+                    name,
+                    key,
+                    id,
+                  }),
+                  action_id: 'pay_order'
                 },
-                value: JSON.stringify({
-                  name,
-                  key,
-                  id,
-                }),
-                action_id: 'pay_order'
-              }
+                {
+                  type: 'button',
+                  text: {
+                    type: 'plain_text',
+                    text: '🗑️ Supprimer',
+                    emoji: true
+                  },
+                  value: JSON.stringify({
+                    name,
+                    key,
+                    id,
+                  }),
+                  action_id: 'remove_order'
+                }
+              ]
+            },
+            {
+              type: 'divider'
             },
           ], []),
-          {
-            type: 'divider'
-          }
         ], []),
       ],
       text: 'Mise à jour du message de commande'
