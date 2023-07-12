@@ -5,7 +5,7 @@ const { doc, setDoc, getDoc } = require('firebase/firestore');
 
 const { db } = require('../../services/firebase');
 
-module.exports = async ({ message, say }, client) => {
+module.exports = async ({ message, say, client }) => {
   const targets = R.uniq(message.blocks[0].elements[0].elements.filter(i => i.type === 'user').map(i => i.user_id));
 
   const userFrom = await client.users.info({ user: message.user });
@@ -61,6 +61,14 @@ module.exports = async ({ message, say }, client) => {
             message: message.text
           }
         );
+
+        const conversation =  await client.conversations.open({
+          users: user
+        });
+        await client.chat.postMessage({
+          channel: conversation.channel.id,
+          text: `Tu as reçu un kudo de <@${user}> dans <#${message.channel}> !`
+        });
       } else {
         await say(`Coquinou, tu ne peux pas d'auto-donner des kudos <@${message.user}> 😅`);
       }
