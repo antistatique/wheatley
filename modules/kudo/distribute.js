@@ -21,6 +21,13 @@ module.exports = async ({ message, say, client }) => {
     currentLimit = limitSnap.data()?.[message.user];
   }
 
+  // Handle given kudos
+  const givenRef = doc(db, 'kudos-total', message.user);
+  const givenSnap = await getDoc(givenRef);
+  let givenData = {};
+  if (givenSnap.exists()) givenData = givenSnap.data();
+
+
   if (currentLimit > targets.length) {
     // Update/decrement daily limit
     await setDoc(
@@ -28,6 +35,16 @@ module.exports = async ({ message, say, client }) => {
       {
         ...previousData,
         [message.user]: currentLimit - targets.length
+      }
+    );
+
+    // Increment given
+    await setDoc(
+      doc(db, 'kudos-total', message.user),
+      {
+        ...givenData,
+        given: (givenData.given ?? 0) + targets.length,
+        name: userFrom.user.real_name
       }
     );
 
@@ -39,13 +56,14 @@ module.exports = async ({ message, say, client }) => {
         const kudoRef = doc(db, 'kudos-total', user);
         const kudoSnap = await getDoc(kudoRef);
 
-        let currentTotal = 0;
-        if (kudoSnap.exists()) currentTotal = kudoSnap.data().total;
+        let currentData = {};
+        if (kudoSnap.exists()) currentData = kudoSnap.data();
 
         await setDoc(
           doc(db, 'kudos-total', user),
           {
-            total: currentTotal + 1,
+            ...currentData,
+            total: (currentData.total ?? 0) + 1,
             name: userTo.user.real_name
           }
         );
@@ -67,7 +85,7 @@ module.exports = async ({ message, say, client }) => {
         });
         await client.chat.postMessage({
           channel: conversation.channel.id,
-          text: `Tu as reçu un kudo de <@${user}> dans <#${message.channel}> ! Tu en totalise *${currentTotal + 1}* 🎉`
+          text: `Tu as reçu un kudo de <@${user}> dans <#${message.channel}> ! Tu en totalise *${(currentData.total ?? 0) + 1}* 🎉`
         });
       } else {
         await say(`Coquinou, tu ne peux pas d'auto-donner des kudos <@${message.user}> 😅`);
