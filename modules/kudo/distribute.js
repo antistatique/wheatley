@@ -67,7 +67,7 @@ module.exports = async ({ message, say, client }) => {
         });
         await client.chat.postMessage({
           channel: conversation.channel.id,
-          text: `Tu as reçu un kudo de <@${user}> dans <#${message.channel}> !`
+          text: `Tu as reçu un kudo de <@${user}> dans <#${message.channel}> ! Tu en totalise *${currentTotal + 1}* 🎉`
         });
       } else {
         await say(`Coquinou, tu ne peux pas d'auto-donner des kudos <@${message.user}> 😅`);

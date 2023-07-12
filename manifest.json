@@ -16,6 +16,13 @@
         "description": "par exemple “/order mami”",
         "usage_hint": "Commande de nourriture",
         "should_escape": false
+      },
+      {
+        "command": "/mykudos",
+        "url": "http://slackbot.alwaysdata.net/slack/events",
+        "description": "total des kudos",
+        "usage_hint": "kudos",
+        "should_escape": false
       }
     ]
   },
@@ -28,7 +35,9 @@
         "commands",
         "incoming-webhook",
         "users:read",
-        "app_mentions:read"
+        "app_mentions:read",
+        "channels:history",
+        "im:history"
       ]
     }
   },
@@ -36,7 +45,9 @@
     "event_subscriptions": {
       "request_url": "http://slackbot.alwaysdata.net/slack/events",
       "bot_events": [
-        "app_mention"
+        "app_mention",
+        "message.channels",
+        "message.im"
       ]
     },
     "interactivity": {
