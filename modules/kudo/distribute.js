@@ -1,5 +1,6 @@
 const R = require('ramda');
 const { nanoid } = require('nanoid');
+const { count } = require('ramda');
 const { format } = require('date-fns');
 const { doc, setDoc, getDoc } = require('firebase/firestore');
 
@@ -7,6 +8,8 @@ const { db, getData } = require('../../services/firebase');
 
 module.exports = async ({ message, say, client }) => {
   const targets = R.uniq(message.blocks[0].elements[0].elements.filter(i => i.type === 'user').map(i => i.user_id));
+  const amount = count(i => i.name === 'kudo', message.blocks[0].elements[0].elements);
+  const totalToGive = amount * targets.length;
 
   // Get sender informations
   const sender = await client.users.info({ user: message.user });
@@ -17,13 +20,13 @@ module.exports = async ({ message, say, client }) => {
   const dailyLimits = await getData('kudos-daily-limits', dayId);
   const currentLimit = dailyLimits?.[message.user] ?? 6; // 6 - 1 = 5 ^^'
 
-  if (currentLimit > targets.length) {
+  if (currentLimit > totalToGive) {
     // Update/decrement daily limit for sender
     await setDoc(
       doc(db, 'kudos-daily-limits', dayId),
       {
         ...dailyLimits,
-        [message.user]: currentLimit - targets.length
+        [message.user]: currentLimit - totalToGive
       }
     );
 
@@ -32,7 +35,7 @@ module.exports = async ({ message, say, client }) => {
       doc(db, 'kudos-total', message.user),
       {
         ...senderData,
-        given: (senderData.given ?? 0) + targets.length,
+        given: (senderData.given ?? 0) + totalToGive,
         name: sender.user.real_name
       }
     );
@@ -47,7 +50,7 @@ module.exports = async ({ message, say, client }) => {
           doc(db, 'kudos-total', target),
           {
             ...receiverData,
-            total: (receiverData.total ?? 0) + 1,
+            total: (receiverData.total ?? 0) + amount,
             name: receiver.user.real_name
           }
         );
@@ -60,7 +63,8 @@ module.exports = async ({ message, say, client }) => {
             from: sender.user.real_name,
             to: receiver.user.real_name,
             date: new Date(),
-            message: message.text
+            message: message.text,
+            amount
           }
         );
 
@@ -69,16 +73,16 @@ module.exports = async ({ message, say, client }) => {
         });
         await client.chat.postMessage({
           channel: conversation.channel.id,
-          text: `Tu as reçu un kudo de <@${target}> dans <#${message.channel}> ! Tu en totalise *${(receiverData.total ?? 0) + 1}* 🎉`
+          text: `Tu as reçu *${amount}* :kudo: de <@${target}> dans <#${message.channel}> ! Tu en totalise *${(receiverData.total ?? 0) + amount}* 🎉`
         });
       } else {
-        await say(`Coquinou, tu ne peux pas d'auto-donner des kudos <@${message.user}> 😅`);
+        await say(`Coquinou, tu ne peux pas d'auto-donner des :kudo: <@${message.user}> 😅`);
       }
     });
 
     await Promise.allSettled(increments);
   } else {
-    await say(`Tu n'as pas assez de kudos en stock <@${message.user}> 🤷`);
+    await say(`Tu n'as pas assez de :kudo: en stock <@${message.user}> 🤷`);
   }
 
 };

@@ -13,7 +13,7 @@ module.exports = async ({ ack, payload, client }) => {
   const weeks = {};
   snapshot.forEach(doc => {
     const date = doc.data().date.toDate();
-    weeks[`${getYear(date)}-${getWeek(date).toString().padStart(2, '0')}`] = (weeks[`${getYear(date)}-${getWeek(date)}`] ?? 0) + 1;
+    weeks[`${getYear(date)}-${getWeek(date).toString().padStart(2, '0')}`] = (weeks[`${getYear(date)}-${getWeek(date)}`] ?? 0) + (doc.data().amount ?? 1);
   });
 
   const yearsCheck = {};
