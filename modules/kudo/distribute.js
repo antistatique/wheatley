@@ -42,7 +42,7 @@ module.exports = async ({ message, say, client }) => {
 
     // Handle all kudos attributions
     const increments = targets.map(async (target) => {
-      if (target !== message.user || true) {
+      if (target !== message.user) {
         const receiver = await client.users.info({ user: target });
         const receiverData = await getData('kudos-total', target);
 
