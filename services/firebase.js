@@ -16,3 +16,12 @@ const firebaseApp = initializeApp(firebaseConfig);
 const db = getFirestore(firebaseApp);
 
 module.exports.db = db;
+
+const getData = async (table, id) => {
+  const ref = doc(db, table, id);
+  const snap = await getDoc(ref);
+  let data = {};
+  if (snap.exists()) data = snap.data();
+  return data;
+}
+module.exports.getData = getData;

@@ -3,37 +3,26 @@ const { nanoid } = require('nanoid');
 const { format } = require('date-fns');
 const { doc, setDoc, getDoc } = require('firebase/firestore');
 
-const { db } = require('../../services/firebase');
+const { db, getData } = require('../../services/firebase');
 
 module.exports = async ({ message, say, client }) => {
   const targets = R.uniq(message.blocks[0].elements[0].elements.filter(i => i.type === 'user').map(i => i.user_id));
 
-  const userFrom = await client.users.info({ user: message.user });
+  // Get sender informations
+  const sender = await client.users.info({ user: message.user });
+  const senderData = await getData('kudos-total', message.user);
 
   // Handle limit
   const dayId = format(new Date(), 'yyyy.MM.dd');
-  const limitRef = doc(db, 'kudos-daily-limits', dayId);
-  const limitSnap = await getDoc(limitRef);
-  let currentLimit = 6; // 6 - 1 = 5 ^^'
-  let previousData = {};
-  if (limitSnap.exists()) {
-    previousData = limitSnap.data();
-    currentLimit = limitSnap.data()?.[message.user];
-  }
-
-  // Handle given kudos
-  const givenRef = doc(db, 'kudos-total', message.user);
-  const givenSnap = await getDoc(givenRef);
-  let givenData = {};
-  if (givenSnap.exists()) givenData = givenSnap.data();
-
+  const dailyLimits = await getData('kudos-daily-limits', dayId);
+  const currentLimit = dailyLimits?.[message.user] ?? 6; // 6 - 1 = 5 ^^'
 
   if (currentLimit > targets.length) {
-    // Update/decrement daily limit
+    // Update/decrement daily limit for sender
     await setDoc(
       doc(db, 'kudos-daily-limits', dayId),
       {
-        ...previousData,
+        ...dailyLimits,
         [message.user]: currentLimit - targets.length
       }
     );
@@ -42,29 +31,24 @@ module.exports = async ({ message, say, client }) => {
     await setDoc(
       doc(db, 'kudos-total', message.user),
       {
-        ...givenData,
-        given: (givenData.given ?? 0) + targets.length,
-        name: userFrom.user.real_name
+        ...senderData,
+        given: (senderData.given ?? 0) + targets.length,
+        name: sender.user.real_name
       }
     );
 
     // Handle all kudos attributions
-    const increments = targets.map(async (user) => {
-      if (user !== message.user || true) {
-        const userTo = await client.users.info({ user });
-
-        const kudoRef = doc(db, 'kudos-total', user);
-        const kudoSnap = await getDoc(kudoRef);
-
-        let currentData = {};
-        if (kudoSnap.exists()) currentData = kudoSnap.data();
+    const increments = targets.map(async (target) => {
+      if (target !== message.user || true) {
+        const receiver = await client.users.info({ user: target });
+        const receiverData = await getData('kudos-total', target);
 
         await setDoc(
-          doc(db, 'kudos-total', user),
+          doc(db, 'kudos-total', target),
           {
-            ...currentData,
-            total: (currentData.total ?? 0) + 1,
-            name: userTo.user.real_name
+            ...receiverData,
+            total: (receiverData.total ?? 0) + 1,
+            name: receiver.user.real_name
           }
         );
 
@@ -73,19 +57,19 @@ module.exports = async ({ message, say, client }) => {
         await setDoc(
           doc(db, 'kudos-logs', id),
           {
-            from: userFrom.user.real_name,
-            to: userTo.user.real_name,
+            from: sender.user.real_name,
+            to: receiver.user.real_name,
             date: new Date(),
             message: message.text
           }
         );
 
         const conversation =  await client.conversations.open({
-          users: user
+          users: target
         });
         await client.chat.postMessage({
           channel: conversation.channel.id,
-          text: `Tu as reçu un kudo de <@${user}> dans <#${message.channel}> ! Tu en totalise *${(currentData.total ?? 0) + 1}* 🎉`
+          text: `Tu as reçu un kudo de <@${target}> dans <#${message.channel}> ! Tu en totalise *${(receiverData.total ?? 0) + 1}* 🎉`
         });
       } else {
         await say(`Coquinou, tu ne peux pas d'auto-donner des kudos <@${message.user}> 😅`);
