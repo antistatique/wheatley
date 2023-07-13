@@ -12,15 +12,22 @@
     "slash_commands": [
       {
         "command": "/order",
-        "url": "http://slackbot.alwaysdata.net/slack/events",
+        "url": "https://6254-146-4-18-138.ngrok-free.app/slack/events",
         "description": "par exemple “/order mami”",
         "usage_hint": "Commande de nourriture",
         "should_escape": false
       },
       {
         "command": "/mykudos",
-        "url": "http://slackbot.alwaysdata.net/slack/events",
+        "url": "https://6254-146-4-18-138.ngrok-free.app/slack/events",
         "description": "total des kudos",
+        "usage_hint": "kudos",
+        "should_escape": false
+      },
+      {
+        "command": "/weeklykudos",
+        "url": "https://6254-146-4-18-138.ngrok-free.app/slack/events",
+        "description": "total des kudos par semaine",
         "usage_hint": "kudos",
         "should_escape": false
       }
@@ -43,7 +50,7 @@
   },
   "settings": {
     "event_subscriptions": {
-      "request_url": "http://slackbot.alwaysdata.net/slack/events",
+      "request_url": "https://6254-146-4-18-138.ngrok-free.app/slack/events",
       "bot_events": [
         "app_mention",
         "message.channels",
@@ -52,8 +59,8 @@
     },
     "interactivity": {
       "is_enabled": true,
-      "request_url": "http://slackbot.alwaysdata.net/slack/events",
-      "message_menu_options_url": "http://slackbot.alwaysdata.net/slack/events"
+      "request_url": "https://6254-146-4-18-138.ngrok-free.app/slack/events",
+      "message_menu_options_url": "https://6254-146-4-18-138.ngrok-free.app/slack/events"
     },
     "org_deploy_enabled": false,
     "socket_mode_enabled": false,
