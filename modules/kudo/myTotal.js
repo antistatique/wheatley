@@ -1,7 +1,4 @@
-const { doc, setDoc, getDoc} = require('firebase/firestore');
-const { nanoid } = require('nanoid');
-
-const { db, getData} = require('../../services/firebase');
+const { getData } = require('../../services/firebase');
 
 module.exports = async ({ ack, payload, client }) => {
   await ack();

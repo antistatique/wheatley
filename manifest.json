@@ -44,7 +44,8 @@
         "users:read",
         "app_mentions:read",
         "channels:history",
-        "im:history"
+        "im:history",
+        "reactions:read"
       ]
     }
   },
@@ -54,7 +55,8 @@
       "bot_events": [
         "app_mention",
         "message.channels",
-        "message.im"
+        "message.im",
+        "reaction_added"
       ]
     },
     "interactivity": {

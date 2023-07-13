@@ -2,7 +2,7 @@ const R = require('ramda');
 const { nanoid } = require('nanoid');
 const { count } = require('ramda');
 const { format } = require('date-fns');
-const { doc, setDoc, getDoc } = require('firebase/firestore');
+const { doc, setDoc } = require('firebase/firestore');
 
 const { db, getData } = require('../../services/firebase');
 

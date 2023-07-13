@@ -1,5 +1,4 @@
-const { collection, getDocsFromServer, query, where } = require('firebase/firestore');
-const { nanoid } = require('nanoid');
+const { collection, getDocsFromServer } = require('firebase/firestore');
 const { getWeek, getYear} = require("date-fns");
 
 const { db } = require('../../services/firebase');
