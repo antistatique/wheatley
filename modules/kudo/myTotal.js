@@ -10,6 +10,6 @@ module.exports = async ({ ack, payload, client }) => {
 
   await client.chat.postMessage({
     channel: payload.channel_id,
-    text: `<@${payload.user_id}> Donnés *${data.given}* :kudo: | Reçus *${data.total}* :kudo:`
+    text: `<@${payload.user_id}> Donnés *${data.given}* :kudo:`
   });
 };
