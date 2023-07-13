@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon app.js",
     "start": "node app.js",
-    "deploy": "npx esbuild app.js  --bundle --outfile=build.cjs --format=cjs --platform=node && npx pkg build.cjs -o wheatley -t node16-linux-x64 && scp ./wheatley slackbot@slackbot.alwaysdata.net:~/www/ && rm build.cjs && rm wheatley"
+    "deploy": "npx esbuild app.js  --bundle --outfile=build.cjs --format=cjs --platform=node && npx pkg build.cjs -o wheatley -t node16-linux-x64 && ssh slackbot@slackbot.alwaysdata.net rm /home/slackbot/www/wheatley && scp ./wheatley slackbot@slackbot.alwaysdata.net:~/www/ && rm build.cjs && rm wheatley"
   },
   "repository": "git@github.com:antistatique/wheatley.git",
   "author": "Antistatique <hello@antistatique.net>",
