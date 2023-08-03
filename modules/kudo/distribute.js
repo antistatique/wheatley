@@ -63,7 +63,6 @@ module.exports = async ({ message, say, client }) => {
             from: sender.user.real_name,
             to: receiver.user.real_name,
             date: new Date(),
-            message: message.text,
             amount
           }
         );
