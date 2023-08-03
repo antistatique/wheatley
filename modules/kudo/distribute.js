@@ -73,7 +73,7 @@ module.exports = async ({ message, say, client }) => {
         });
         await client.chat.postMessage({
           channel: conversation.channel.id,
-          text: `Tu as reçu *${amount}* :kudo: de <@${message.user}> dans <#${message.channel}> !`
+          text: `Tu as reçu *${amount}* :kudo: de <@${message.user}> dans <#${message.channel}> !\ncf. “${message.text}”`
         });
       } else {
         await say(`Coquinou, tu ne peux pas d'auto-donner des :kudo: <@${message.user}> 😅`);
