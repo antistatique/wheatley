@@ -21,28 +21,28 @@ module.exports = async ({ message, say, client }) => {
   const currentLimit = dailyLimits?.[message.user] ?? 6; // 6 - 1 = 5 ^^'
 
   if (currentLimit > totalToGive) {
-    // Update/decrement daily limit for sender
-    await setDoc(
-      doc(db, 'kudos-daily-limits', dayId),
-      {
-        ...dailyLimits,
-        [message.user]: currentLimit - totalToGive
-      }
-    );
+    if (targets.every(i => i !== message.user)) {
+      // Update/decrement daily limit for sender
+      await setDoc(
+        doc(db, 'kudos-daily-limits', dayId),
+        {
+          ...dailyLimits,
+          [message.user]: currentLimit - totalToGive
+        }
+      );
 
-    // Increment given
-    await setDoc(
-      doc(db, 'kudos-total', message.user),
-      {
-        ...senderData,
-        given: (senderData.given ?? 0) + totalToGive,
-        name: sender.user.real_name
-      }
-    );
+      // Increment given
+      await setDoc(
+        doc(db, 'kudos-total', message.user),
+        {
+          ...senderData,
+          given: (senderData.given ?? 0) + totalToGive,
+          name: sender.user.real_name
+        }
+      );
 
-    // Handle all kudos attributions
-    const increments = targets.map(async (target) => {
-      if (target !== message.user) {
+      // Handle all kudos attributions
+      const increments = targets.map(async (target) => {
         const receiver = await client.users.info({ user: target });
         const receiverData = await getData('kudos-total', target);
 
@@ -67,19 +67,27 @@ module.exports = async ({ message, say, client }) => {
           }
         );
 
-        const conversation =  await client.conversations.open({
+        const receiverConversation =  await client.conversations.open({
           users: target
         });
         await client.chat.postMessage({
-          channel: conversation.channel.id,
+          channel: receiverConversation.channel.id,
           text: `Tu as reçu *${amount}* :kudo: de <@${message.user}> dans <#${message.channel}> !\ncf. “${message.text}”`
         });
-      } else {
-        await say(`Coquinou, tu ne peux pas d'auto-donner des :kudo: <@${message.user}> 😅`);
-      }
-    });
+      });
 
-    await Promise.allSettled(increments);
+      await Promise.allSettled(increments);
+
+      const senderConversation =  await client.conversations.open({
+        users: message.user
+      });
+      await client.chat.postMessage({
+        channel: senderConversation.channel.id,
+        text: `Tu as donné ${totalToGive} :kudo:, il t'en reste *${currentLimit - totalToGive - 1}* aujourd'hui :wink:`
+      });
+    } else {
+      await say(`Coquinou, tu ne peux pas d'auto-donner des :kudo: <@${message.user}> 😅`);
+    }
   } else {
     await say(`Tu n'as pas assez de :kudo: en stock <@${message.user}> 🤷`);
   }
