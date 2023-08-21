@@ -1,5 +1,5 @@
 module.exports = async ({ event, client }) => {
-  if (event.reaction === 'kudo') {
+  if (event.reaction === 'kudo' || event.reaction === 'taco') {
     console.log('event', JSON.stringify(event, null, 2));
     const conversation =  await client.conversations.open({
       users: event.user
