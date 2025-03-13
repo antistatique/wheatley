@@ -40,7 +40,7 @@ module.exports = async ({ id, client, token, title, price, updatedDoc }) => {
               type: 'section',
               text: {
                 type: 'mrkdwn',
-                text: `${order[key].people[name] ? ':white_check_mark:' : ':arrows_counterclockwise:'} @${name} - ${order[key].price}`
+                text: `${order[key].people[name] ? ':white_check_mark:' : ':arrows_counterclockwise:'} @${name} - ${order[key].price} CHF`
               },
             },
             {
