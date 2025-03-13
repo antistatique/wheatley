@@ -44,7 +44,7 @@ module.exports = async ({ ack, payload, context, client }) => {
       text: 'Récupération du menu en cours'
     });
 
-    if (source !== 'unknown') await sources[source].populateMenu();
+    // if (source !== 'unknown') await sources[source].populateMenu();
 
     await client.chat.update({
       token: context.botToken,

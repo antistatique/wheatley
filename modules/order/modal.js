@@ -18,44 +18,45 @@ module.exports = async ({ ack, body, client }) => {
         view: {
           type: 'modal',
           callback_id: 'order_modal',
+          private_metadata: JSON.stringify({
+            id,
+          }),
           title: {
             type: 'plain_text',
             text: `Commande “${source}”`
           },
+          "submit": {
+            "type": "plain_text",
+            "text": "Envoyer",
+            "emoji": true
+          },
           blocks: [
-            ...menu.slice(0, 50).reduce((acc, { price, title, image }) => [
-              ...acc,
-              {
-                type: 'section',
-                text: {
-                  type: 'mrkdwn',
-                  text: `\n \n \n*${title}*\n${price}`
-                },
-                accessory: {
-                  type: 'image',
-                  image_url: image,
-                  alt_text: title
-                }
+            {
+              "block_id": "name",
+              "type": "input",
+              "element": {
+                "type": "plain_text_input",
+                "action_id": "add"
               },
-              {
-                type: 'actions',
-                elements: [{
-                  type: 'button',
-                  text: {
-                    type: 'plain_text',
-                    text: 'Ajouter',
-                    emoji: true
-                  },
-                  style: 'primary',
-                  value: JSON.stringify({
-                    id,
-                    title,
-                    price
-                  }),
-                  action_id: `add_order`
-                }]
+              "label": {
+                "type": "plain_text",
+                "text": "Pizza",
+                "emoji": true
+              }
+            },
+            {
+              "block_id": "price",
+              "type": "input",
+              "element": {
+                "type": "plain_text_input",
+                "action_id": "add"
               },
-            ], [])
+              "label": {
+                "type": "plain_text",
+                "text": "Prix (en CHF)",
+                "emoji": true
+              }
+            },
           ],
         }
       });

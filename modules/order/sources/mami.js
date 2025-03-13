@@ -19,7 +19,7 @@ module.exports = {
       type: 'section',
       text: {
         type: 'mrkdwn',
-        text: ':pizza: Envie de la *meilleure pizza napolitaine* de Lausanne ?\n:point_right: Pour <tel:+41216254848|finaliser la commande>'
+        text: ':pizza: Envie de la *meilleure pizza napolitaine* de Lausanne ?\n📜 Pour <https://mylightspeed.app/DCMZGSUT/C-ordering/menu|voir le menu>\n:point_right: Pour <tel:+41216254848|téléphoner>'
       },
       accessory: {
         type: 'button',
@@ -36,39 +36,4 @@ module.exports = {
       }
     }
   ],
-
-  populateMenu: async () => {
-    const { data } = await axios('https://api.wixrestaurants.com/v2/organizations/5468348042963155/menu?locationId=e4b191c7-3247-4883-b49d-8f1a6221fb76');
-
-    const menu = data?.items
-      ?.filter(i => i.price > 1250)
-      ?.map(i => ({
-        title: i.title?.fr_CH,
-        price: `CHF ${i.price / 100}`,
-        image: i.media?.logo ?? 'https://i.imgur.com/WKY0YcT.png',
-      }))
-      ?.sort((a, b) => {
-        const titleA = a.title.toLowerCase();
-        const titleB = b.title.toLowerCase();
-
-        if (titleA < titleB) {
-          return -1;
-        } else if (titleA > titleB) {
-          return 1;
-        } else {
-          return 0;
-        }
-      });
-
-    if (menu.length > 0) {
-      try {
-        await setDoc(doc(db, 'menus', 'mami'), {
-          updatedAt: new Date(),
-          menu
-        });
-      } catch (e) {
-        console.error("Error updating menu: ", e);
-      }
-    }
-  },
 }

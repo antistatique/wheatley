@@ -1,12 +1,15 @@
 const { doc, getDoc, setDoc } = require('firebase/firestore');
-
+const { nanoid } = require('nanoid');
 const { db } = require('../../services/firebase');
 const updateMessage = require('./updateMessage');
 
-module.exports = async ({ ack, body, context, client}) => {
+module.exports = async ({ ack, body, view, client, context }) => {
   await ack();
 
-  const { id, title, price } = JSON.parse(body.actions[0].value);
+  const title = body.view.state.values.name.add.value;
+  const price = body.view.state.values.price.add.value;
+  const { id } = JSON.parse(view.private_metadata);
+
   const docRef = doc(db, 'orders', id);
   const docSnap = await getDoc(docRef);
   
@@ -41,5 +44,5 @@ module.exports = async ({ ack, body, context, client}) => {
       token: context.botToken,
       updatedDoc
     })
-  }  
+  }
 }
