@@ -19,7 +19,7 @@ module.exports = {
       type: 'section',
       text: {
         type: 'mrkdwn',
-        text: ':pizza: Envie d\'une pizza *moins bonne que chez Mami* #traitor ?\n:point_right: Pour <https://webshop.dieci.ch/c/1/pizza|finaliser la commande>'
+        text: ':pizza: Envie d\'une pizza *moins cramée que chez Mami* ?\n📜 Pour <https://webshop.dieci.ch/c/1/pizza|voir le menu>\n:point_right: Pour <https://webshop.dieci.ch/c/1/pizza|finaliser la commande>'
       },
       accessory: {
         type: 'button',
